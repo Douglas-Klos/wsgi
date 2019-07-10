@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import datetime
+from os import path
+
 
 default = "No Value Set"
 
@@ -20,12 +22,23 @@ def application(environ, start_response):
     pprint.pprint(environ)
 
     response_body = body.format(
+        # software=environ.get('SERVER_SOFTWARE', default),
         software=environ.get('SERVER_SOFTWARE', default),
-        path="aaaa",
-        month="bbbb",
-        date="cccc",
-        year="dddd",
-        client_ip="eeee"
+
+        # path="aaaa",
+        path=environ.get('PATH_INFO', default),
+
+        # month="bbbb",
+        month=datetime.datetime.today().strftime("%B"),
+
+        # date="cccc",
+        date=datetime.datetime.today().strftime("%d"),
+
+        # year="dddd",
+        year=datetime.datetime.today().strftime("%Y"),
+
+        # client_ip="eeee"
+        client_ip=environ.get('REMOTE_ADDR', default)
     )
     status = '200 OK'
 

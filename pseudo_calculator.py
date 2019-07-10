@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This pseudo calculator should support the following operations:
 
@@ -21,20 +22,42 @@ Consider the following URL/Response body pairs as tests:
 
 """
 
+
+def positive(args):
+    if int(args) > 0:
+        return "Ture"
+    return "False"
+
+
+def negative(args):
+    if int(args) < 0:
+        return "True"
+    return "False"
+
+
 def resolve_path(path):
     """
     Should return two values: a callable and an iterable of
     arguments, based on the path.
     """
 
-    # TODO: Provide correct values for func and args. The
-    # examples provide the correct *syntax*, but you should
-    # determine the actual values of func and args using the
-    # path.
-    func = some_func
-    args = ['25', '32']
+    funcs = {
+        "positive": positive,
+        "negative": negative,
+    }
+
+    path = path.strip('/').split('/')
+
+    func_name = path[0]
+    args = path[1:]
+
+    try:
+        func = funcs[func_name]
+    except KeyError:
+        raise NameError
 
     return func, args
+
 
 def application(environ, start_response):
     headers = [('Content-type', 'text/html')]
